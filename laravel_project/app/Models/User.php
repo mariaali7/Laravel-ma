@@ -3,15 +3,24 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Applications\Application;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'jobsaved', 'user_id', 'task_id');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +30,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image',
+        'cv',
+        'bio',
     ];
 
     /**
@@ -42,4 +54,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+   
 }

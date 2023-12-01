@@ -16,21 +16,7 @@ class CreateAdminsTable extends Migration
             $table->timestamps();
         });
 
-        // Add validation rules
-        $rules = [
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:admins',
-            'password' => 'required',
-        ];
 
-        // Validate the columns
-        $validator = \Illuminate\Support\Facades\Validator::make([], $rules);
-
-        if ($validator->fails()) {
-            // Rollback the migration if validation fails
-            Schema::dropIfExists('admins');
-            throw new \Exception('Validation failed: ' . $validator->errors()->first());
-        }
     }
     
 
